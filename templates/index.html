@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>History of the U.S. Presidents</h1>
+<p>Click any president's name.</p>
+<ul>
+    {% for pair in pairs %}
+    <li><a href="{{ url_for('detail', num=pair[0]) }}">{{ pair[1] }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

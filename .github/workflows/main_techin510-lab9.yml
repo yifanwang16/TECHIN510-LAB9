@@ -52,8 +52,6 @@ jobs:
           name: python-app
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      - name: Navigate to app directory
-        run: cd my-flask-app
       - name: Login to Azure
         uses: azure/login@v1
         with:

@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: "Production"
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write
@@ -52,6 +52,11 @@ jobs:
           name: python-app
       - name: Unzip artifact for deployment
         run: unzip release.zip
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -60,13 +65,13 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_81545BF5F6B24CF59A459DCF5F69B5C6 }}
       - name: Start Flask app
         run: |
-          export FLASK_APP=presidents.py
-          flask run --host=0.0.0.0 --port=8000
+          source .venv/bin/activate
+          python presidents.py
         env:
           FLASK_ENV: production
-      - name: "Deploy to Azure Web App"
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: "TECHIN510-LAB9"
-          slot-name: "Production"
+          app-name: 'TECHIN510-LAB9'
+          slot-name: 'Production'
